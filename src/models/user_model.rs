@@ -1,15 +1,16 @@
 use serde::{ Serialize, Deserialize };
 
 #[derive(Debug, Serialize, Deserialize)]
-struct Claims {
+pub struct Claims {
     sub: String,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
-struct User{
-    username: String,
-    email: String,
-    phone: i32,
-    password: String,
-    isadmin: Bool,
+pub struct User{
+    pub id: Option<ObjectId>, 
+    pub username: String,
+    pub email: String,
+    pub phone: i32,
+    pub password: String,
+    pub isadmin: Bool,
 }

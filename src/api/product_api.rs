@@ -5,9 +5,8 @@ use actix_web::{
     HttpResponse
 };
 
-use chrono::{ DateTime, Utc };
-
-use mongodb::bson::oid::ObjectId;
+// use chrono::{ DateTime, Utc };
+// use mongodb::bson::oid::ObjectId;
 
 
 #[post("/product")]
@@ -26,7 +25,7 @@ pub async fn create_product(db: Data<ProductRepo>, mut new_product: Json<Product
     //     countinstock: new_product.countinstock.to_owned(),
     // };
 
-    new_product.createdat = Some(Utc::now());
+    // new_product.createdat = Some(Utc::now());
     
     let product_detail = db.createProduct(new_product.into_inner()).await;
 

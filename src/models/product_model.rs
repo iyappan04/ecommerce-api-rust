@@ -16,4 +16,5 @@ pub struct Product{
     pub description: String,
     pub countinstock: i32,
     pub createdat:  Option<DateTime<Utc>>,
+    pub updatedat:  Option<DateTime<Utc>>,
 }

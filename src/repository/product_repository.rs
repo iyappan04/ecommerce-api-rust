@@ -53,6 +53,7 @@ impl ProductRepo {
             description: new_product.description,
             countinstock: new_product.countinstock,
             createdat:  Some(Utc::now()),
+            updatedat:  Some(Utc::now()),
         };
 
 

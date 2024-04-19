@@ -1,6 +1,6 @@
 use crate::{ models::product_model::Product, repository::product_repository::ProductRepo };
 use actix_web::{
-    post,
+    post, get,
     web::{ Data, Json, Path },
     HttpResponse
 };
@@ -35,3 +35,22 @@ pub async fn create_product(db: Data<ProductRepo>, mut new_product: Json<Product
     }
 
 }
+
+
+#[get("/product/{id}")]
+pub async fn get_product_by_id(db: Data<ProductRepo>, path: Path<String>) -> HttpResponse {
+
+    let id = path.into_inner();
+    
+    if id.is_empty() {
+        return HttpResponse::BadRequest().body("Invalid ID");
+    }
+
+    let product_detail = db.get_product(&id).await;
+
+    match product_detail {
+        Ok(user) => HttpResponse::Ok().json(user),
+        Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
+    }
+}
+

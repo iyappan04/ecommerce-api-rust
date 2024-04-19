@@ -5,13 +5,15 @@ use dotenv::dotenv;
 
 use futures::stream::TryStreamExt;
 
+use mongodb::bson::{Bson, DateTime};
+
 use mongodb::{
     bson::{doc, extjson::de::Error, oid::ObjectId},
     results::{InsertOneResult, UpdateResult, DeleteResult}, 
     Client, Collection,
 };
 
-use chrono::{ DateTime, Utc };
+use chrono::{ DateTime as OtherDateTime, Utc };
 
 use crate::models::product_model::Product;
 pub struct ProductRepo {
@@ -52,8 +54,8 @@ impl ProductRepo {
             rating: new_product.rating,
             description: new_product.description,
             countinstock: new_product.countinstock,
-            createdat:  Some(Utc::now()),
-            updatedat:  None,
+            createdat:  None,
+            updatedat:  Some(Utc::now()),
         };
 
         let produc = self 
@@ -67,7 +69,7 @@ impl ProductRepo {
     }
 
 
-    pub async fn get_product(self, id: &String) -> Result<Product, Error> {
+    pub async fn get_product(&self, id: &String) -> Result<Product, Error> {
         
         let obj_id = ObjectId::parse_str(id).unwrap();
         let filter = doc! {"_id": obj_id};
@@ -108,7 +110,7 @@ impl ProductRepo {
 
         let product = doc! {
             "$set": {
-                // "id": new_product.id, 
+                "id": new_product.id, 
                 "name": new_product.name,
                 "image": new_product.image,
                 "brand": new_product.brand,
@@ -118,8 +120,8 @@ impl ProductRepo {
                 "rating": new_product.rating,
                 "description": new_product.description,
                 "countinstock": new_product.countinstock,
-                // "createdat":  Utc::now(),
-                // "updatedat":  Utc::now(),
+                // "createdat":  Bson::DateTime,
+                // "updatedat":  Bson::DateTime,
             }
         };
 
@@ -130,7 +132,7 @@ impl ProductRepo {
             .ok()
             .expect("Error on update product");
         
-        Ok((update_product))
+        Ok(update_product)
 
     } 
 

@@ -2,10 +2,22 @@ use mongodb::bson::oid::ObjectId;
 use serde::{ Serialize, Deserialize };
 use chrono::{ DateTime, Utc };
 
-use product_model::Product;
+pub struct OrderProduct {
+    pub id: Option<ObjectId>, 
+    pub name: String,
+    pub image: String,
+    pub price: i32,
+    pub quantity: i32,
+}
+
+pub struct OrderUser {
+    pub id: Option<ObjectId>, 
+    pub username: String,
+    pub email: String,
+}
 
 pub struct Order {
-    pub user:  Option<ObjectId>,
+    pub user:  OrderUser,
     pub id: Option<ObjectId>, 
     pub paymentmethod: String,
     pub taxprice: i64,
@@ -19,8 +31,8 @@ pub struct Order {
 }
 
 pub struct OrderItem {
-    pub product: Option<ObjectId>,
-    pub order: Option<ObjectId>,
+    pub product: OrderProduct,
+    pub order: Order,
     pub name: String,
     pub image: String,    
     pub price: i32,
@@ -28,7 +40,7 @@ pub struct OrderItem {
 }
 
 pub struct ShippingAddress {
-    pub order: Option<ObjectId>,
+    pub order: Order,
     pub address: String,
     pub city: String,    
     pub postalcode: i64,

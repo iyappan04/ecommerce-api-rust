@@ -41,7 +41,8 @@ impl UserRepo {
         UserRepo { col }
     }
 
-    // pub async register() {
 
-    // }
+    pub async fn registerUser 
+
+  
 }

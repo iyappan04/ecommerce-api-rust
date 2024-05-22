@@ -55,43 +55,43 @@ pub async fn get_product_by_id(db: Data<ProductRepo>, path: Path<String>) -> Htt
 }
 
 
-#[put("/user/{id}")]
-pub async fn update_user(
-    db: Data<ProductRepo>,
-    path: Path<String>,
-    new_user: Json<Product>,
-) -> HttpResponse {
-    let id = path.into_inner();
+// #[put("/user/{id}")]
+// pub async fn update_user(
+//     db: Data<ProductRepo>,
+//     path: Path<String>,
+//     new_user: Json<Product>,
+// ) -> HttpResponse {
+//     let id = path.into_inner();
     
-    if id.is_empty() {
-        return HttpResponse::BadRequest().body("invalid ID");
-    };
+//     if id.is_empty() {
+//         return HttpResponse::BadRequest().body("invalid ID");
+//     };
 
-    let data = User {
-        id: Some(ObjectId::parse_str(&id).unwrap()),
-        name: new_user.name.to_owned(),
-        location: new_user.location.to_owned(),
-        title: new_user.title.to_owned(),
-    };
+//     let data = User {
+//         id: Some(ObjectId::parse_str(&id).unwrap()),
+//         name: new_user.name.to_owned(),
+//         location: new_user.location.to_owned(),
+//         title: new_user.title.to_owned(),
+//     };
 
-    let update_result = db.update_user(&id, data).await;
+//     let update_result = db.update_user(&id, data).await;
 
-    match update_result {
-        Ok(update) => {
-            if update.matched_count == 1 {
-                let updated_user_info = db.get_user(&id).await;
+//     match update_result {
+//         Ok(update) => {
+//             if update.matched_count == 1 {
+//                 let updated_user_info = db.get_user(&id).await;
 
-                return match updated_user_info {
-                    Ok(user) => HttpResponse::Ok().json(user),
-                    Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
-                };
-            } else {
-                return HttpResponse::NotFound().body("No user found with specified ID");
-            }
-        }
-        Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
-    }
-}
+//                 return match updated_user_info {
+//                     Ok(user) => HttpResponse::Ok().json(user),
+//                     Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
+//                 };
+//             } else {
+//                 return HttpResponse::NotFound().body("No user found with specified ID");
+//             }
+//         }
+//         Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
+//     }
+// }
 
 
 #[delete("/deleteproduct/{id}")]
